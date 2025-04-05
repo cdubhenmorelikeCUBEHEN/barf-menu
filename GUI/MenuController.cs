@@ -44,109 +44,95 @@ namespace Grate.GUI
         public static ConfigEntry<string> Theme;
         public static ConfigEntry<bool> Festive;
 
-        public Material[] grate, bark, HolloPurp;
+        public Material[] frate, barf, HolloPurp;
 
         bool docked;
 
         protected override void Awake()
         {
-            if (NetworkSystem.Instance.GameModeString.Contains("MODDED_"))
+            if (true)
             {
-                Instance = this;
-                try
+                if (NetworkSystem.Instance.GameModeString.Contains("MODDED_"))
                 {
-                    Logging.Debug("Awake");
-                    base.Awake();
-                    this.throwOnDetach = true;
-                    gameObject.AddComponent<PositionValidator>();
-                    Plugin.configFile.SettingChanged += SettingsChanged;
-                    List<GrateModule> TooAddmodules = new List<GrateModule>()
+                    Instance = this;
+                    try
                     {
-                        // Locomotion
-                        gameObject.AddComponent<Airplane>(),
-                        gameObject.AddComponent<Bubble>(),
-                        gameObject.AddComponent<Fly>(),
-                        gameObject.AddComponent<GrapplingHooks>(),
-                        gameObject.AddComponent<Climb>(),
-                        gameObject.AddComponent<DoubleJump>(),
-                        gameObject.AddComponent<Platforms>(),
-                        gameObject.AddComponent<Frozone>(),
-                        gameObject.AddComponent<NailGun>(),
-                        gameObject.AddComponent<Rockets>(),
-                        gameObject.AddComponent<SpeedBoost>(),
-                        gameObject.AddComponent<Swim>(),
-                        gameObject.AddComponent<Wallrun>(),
-                        gameObject.AddComponent<Zipline>(),
+                        Logging.Debug("Awake");
+                        base.Awake();
+                        this.throwOnDetach = true;
+                        gameObject.AddComponent<PositionValidator>();
+                        Plugin.configFile.SettingChanged += SettingsChanged;
+                        List<GrateModule> TooAddmodules = new List<GrateModule>()
+                        {
+                            // Locomotion
+                            gameObject.AddComponent<Bubble>(),
+                            gameObject.AddComponent<Fly>(),
+                            gameObject.AddComponent<Airplane>(),
+                            gameObject.AddComponent<Helicopter>(),
+                            gameObject.AddComponent<GrapplingHooks>(),
+                            gameObject.AddComponent<Climb>(),
+                            gameObject.AddComponent<DoubleJump>(),
+                            gameObject.AddComponent<Platforms>(),
+                            gameObject.AddComponent<Frozone>(),
+                            gameObject.AddComponent<NailGun>(),
+                            gameObject.AddComponent<Rockets>(),
+                            gameObject.AddComponent<SpeedBoost>(),
+                            gameObject.AddComponent<Swim>(),
+                            gameObject.AddComponent<Wallrun>(),
+                            gameObject.AddComponent<Zipline>(),
 
-                        //// Physics
-                        gameObject.AddComponent<LowGravity>(),
-                        gameObject.AddComponent<NoClip>(),
-                        gameObject.AddComponent<NoSlip>(),
-                        gameObject.AddComponent<Potions>(),
-                        gameObject.AddComponent<SlipperyHands>(),
+                            //// Physics
+                            gameObject.AddComponent<LowGravity>(),
+                            gameObject.AddComponent<NoClip>(),
+                            gameObject.AddComponent<NoSlip>(),
+                            gameObject.AddComponent<Potions>(),
+                            gameObject.AddComponent<SlipperyHands>(),
 
-                        //// Teleportation
-                        gameObject.AddComponent<Checkpoint>(),
-                        gameObject.AddComponent<Portal>(),
-                        gameObject.AddComponent<Pearl>(),
-                        gameObject.AddComponent<Teleport>(),
+                           //// Teleportation
+                            gameObject.AddComponent<Checkpoint>(),
+                            gameObject.AddComponent<Portal>(),
+                            gameObject.AddComponent<Pearl>(),
+                            gameObject.AddComponent<Teleport>(),
                 
-                        //// Multiplayer
-                        gameObject.AddComponent<Boxing>(),
-                        gameObject.AddComponent<Piggyback>(),
-                        gameObject.AddComponent<Telekinesis>(),
-                        gameObject.AddComponent<Fireflies>(),
-                        gameObject.AddComponent<ESP>(),
-                        gameObject.AddComponent<RatSword>(),
-                        gameObject.AddComponent<Kamehameha>(),
+                            //// Multiplayer
+                            gameObject.AddComponent<Boxing>(),
+                            gameObject.AddComponent<Piggyback>(),
+                            gameObject.AddComponent<Telekinesis>(),
+                            gameObject.AddComponent<Fireflies>(),
+                            gameObject.AddComponent<ESP>(),
+                            gameObject.AddComponent<RatSword>(),
+                            gameObject.AddComponent<Kamehameha>(),
+                            //// gameObject.AddComponent<Ironman>(),(broken)
 
-                        //// Misc
-                        gameObject.AddComponent<ReturnToVS>(),
-                        gameObject.AddComponent<Lobby>(),
+                            //// Misc
+                            gameObject.AddComponent<ReturnToVS>(),
+                            gameObject.AddComponent<Lobby>(),
+                            gameObject.AddComponent<CatMeow>(),
+                            gameObject.AddComponent<Halo>(),
+                            gameObject.AddComponent<Grazing>()
                     };
-                    Grazing g = gameObject.AddComponent<Grazing>();
-                    if (PhotonNetwork.LocalPlayer.UserId == "42D7D32651E93866")
-                    {
-                        modules.Add(g);
+                        modules.AddRange(TooAddmodules);
+                        ReloadConfiguration();
                     }
-                    Halo halo = gameObject.AddComponent<Halo>();
-                    if (PhotonNetwork.LocalPlayer.UserId == "JD3moEFc6tOGYSAp4MjKsIwVycfrAUR5nLkkDNSvyvE=".DecryptString())
-                    {
-                        modules.Add(halo);
-                    }
-
-                    CatMeow meow = gameObject.AddComponent<CatMeow>();
-                    if (PhotonNetwork.LocalPlayer.UserId == "FBE3EE50747CB892")
-                    {
-                        modules.Add(meow);
-                    }
-
-                    StoneBroke sb = gameObject.AddComponent<StoneBroke>();
-                    if (PhotonNetwork.LocalPlayer.UserId == "CA8FDFF42B7A1836")
-                    {
-                        modules.Add(sb);
-                    }
-                    modules.AddRange(TooAddmodules);
-                    ReloadConfiguration();
+                    catch (Exception e) { Logging.Exception(e); }
                 }
-                catch (Exception e) { Logging.Exception(e); }
             }
         }
 
         private void ThemeChanged()
         {
             Debug.Log("Theme value: " + Theme.Value);
-            if (grate == null)
+            if (frate == null)
             {
-                grate = new Material[]
+                frate = new Material[]
                 {
-                    Plugin.assetBundle.LoadAsset<Material>("Zipline Rope Material"),
-                    Plugin.assetBundle.LoadAsset<Material>("Metal Material")
+                    Plugin.assetBundle.LoadAsset<Material>("Metal Material"),
+                    Plugin.assetBundle.LoadAsset<Material>("Zipline Rope Material")
                 };
-                bark = new Material[]
+                barf = new Material[]
                 {
-                    Plugin.assetBundle.LoadAsset<Material>("m_Menu Outer"),
-                    Plugin.assetBundle.LoadAsset<Material>("m_Menu Inner")
+                    Plugin.assetBundle.LoadAsset<Material>("m_Menu Inner"),
+                    Plugin.assetBundle.LoadAsset<Material>("m_Menu Outer")
 
                 };
                 Material mat = Plugin.assetBundle.LoadAsset<Material>("m_TK Sparkles");
@@ -157,13 +143,13 @@ namespace Grate.GUI
                 };
             }
             string ThemeName = Theme.Value.ToLower();
-            if (ThemeName == "grate")
+            if (ThemeName == "frate")
             {
-                gameObject.GetComponent<MeshRenderer>().materials = grate;
+                gameObject.GetComponent<MeshRenderer>().materials = frate;
             }
-            if (ThemeName == "bark")
+            if (ThemeName == "barf")
             {
-                gameObject.GetComponent<MeshRenderer>().materials = bark;
+                gameObject.GetComponent<MeshRenderer>().materials = barf;
             }
             if (ThemeName == "holowpurple")
             {
@@ -543,12 +529,12 @@ namespace Grate.GUI
                 );
 
                 ConfigDescription ThemeDesc = new ConfigDescription(
-                   "Which Theme Should Grate Use?",
-                   new AcceptableValueList<string>("grate", "bark","HolowPurple")
+                   "Which Theme Should Barf Use?",
+                   new AcceptableValueList<string>("frate", "barf","HolowPurple")
                );
                 Theme = Plugin.configFile.Bind("General",
                     "theme",
-                    "Grate",
+                    "barf",
                     ThemeDesc
                 );
                 ConfigDescription FestiveDesc = new ConfigDescription(
